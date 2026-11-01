@@ -1,0 +1,242 @@
+/* ==========================================================
+   Missão Prato Colorido – CSS do jogo (usa as variáveis do global.css)
+   ========================================================== */
+
+.jogo-topo {
+  padding-block: 2rem 1rem;
+}
+
+.jogo-topo p {
+  color: var(--texto-suave);
+}
+
+.voltar {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.jogo-area {
+  width: min(100% - 2.5rem, 84rem); /* mais largo que o resto do site */
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ---------- Prato ---------- */
+.prato-jogo {
+  position: sticky;
+  top: 1rem;
+}
+
+.prato-mesa {
+  position: relative;
+  width: min(100%, 50rem);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  background: url("prato.png") center / contain no-repeat;
+  mix-blend-mode: multiply; /* some com o fundo branco da imagem */
+  transition: filter 0.2s;
+}
+
+.prato-mesa.sobre {
+  filter: drop-shadow(0 0 0.8rem var(--cenoura));
+}
+
+.prato-comidas {
+  position: absolute;
+  inset: 14%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 0.15rem;
+}
+
+.prato-vazio {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 25%;
+  margin: 0;
+  max-width: none;
+  color: var(--texto-suave);
+  font-family: var(--fonte-titulo);
+  font-size: 1.2rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ---------- Alimentos ---------- */
+.alimento {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.alimento img {
+  display: block;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.prato-comidas .alimento {
+  width: 5rem; /* tamanho fixo: não cresce junto com o prato */
+}
+
+.prato-comidas .alimento:hover {
+  transform: scale(1.12);
+}
+
+.bancada {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 1rem;
+  list-style: none;
+  border: 2px dashed var(--borda);
+  border-radius: var(--raio);
+  background: var(--superficie);
+}
+
+.bancada.sobre {
+  border-color: var(--cenoura);
+}
+
+.bancada .alimento {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid var(--borda);
+  border-radius: 1rem;
+  background: #fff;
+  text-align: center;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.bancada .alimento:hover {
+  transform: translateY(-3px);
+  border-color: var(--cenoura);
+}
+
+.bancada .alimento span {
+  display: block;
+  margin-top: 0.25rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.bancada .alimento img {
+  height: 5.5rem;
+  object-fit: contain;
+}
+
+.bancada li[hidden] {
+  display: none;
+}
+
+/* ---------- Controles e resultado ---------- */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+.botao-sec {
+  padding: 0.85em 1.6em;
+  border: 3px solid var(--berinjela);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--berinjela);
+  font-family: var(--fonte-titulo);
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.botao-sec:hover {
+  background: var(--berinjela);
+  color: #fff;
+}
+
+button.botao {
+  border: 0;
+  cursor: pointer;
+}
+
+.resultado {
+  margin: 1.25rem auto 0;
+  padding: 1rem 1.25rem;
+  border-radius: var(--raio);
+  text-align: center;
+  font-family: var(--fonte-titulo);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.resultado:empty {
+  display: none;
+}
+
+.resultado p {
+  margin: 0.25rem auto 0;
+  font-family: var(--fonte-texto);
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.resultado.venceu {
+  background: var(--brocolis);
+  color: #fff;
+  animation: resultado-pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.resultado.melhorar {
+  background: var(--milho);
+  color: #3a2c00;
+}
+
+@keyframes resultado-pop {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+@media (max-width: 52rem) {
+  .jogo-area { grid-template-columns: 1fr; }
+  .prato-jogo { position: static; }
+  .prato-mesa { width: min(100%, 34rem); }
+  .prato-comidas .alimento { width: 4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resultado.venceu { animation: none; }
+  .bancada .alimento,
+  .prato-comidas .alimento { transition: none; }
+}
+
+/* Em telas baixas o prato não fica fixo, para o botão e o resultado continuarem acessíveis */
+@media (max-height: 56rem) {
+  .prato-jogo { position: static; }
+}
+
+/* Botão para a próxima página (aparece só quando vence) */
+#proximo {
+  display: block;
+  width: fit-content;
+  margin: 1.25rem auto 0;
+  text-align: center;
+}
+
+#proximo[hidden] {
+  display: none;
+}
